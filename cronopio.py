@@ -10,17 +10,18 @@ class Cronopio:
         self.__life = 100
 
         self.__pos = pos
-        self.__vel = None
 
         self.__a = self.__random_inicial_value()
         self.__b = self.__random_inicial_value()
-        self.__t = self.__random_inicial_value()
+        self.__t = randint(50, 60)
+
+        self.__vel = self.__new_vel()
         
         self.__t_counter = 0
 
         self.__d = self.__get_diameter()
 
-        self.__move = self.__still
+        self.__move = self.__up
 
     def __new_vel(self):
 
@@ -41,6 +42,7 @@ class Cronopio:
     def time(self):
         self.__life -= 1
         self.__move()
+        self.__t_counter += 1
         if self.__t_counter % self.__t == 0:
             self.__update_movement()
             self.__change_velocity()
@@ -92,7 +94,7 @@ class Cronopio:
 
         distance = math.sqrt(dif_x**2 + dif_y**2)
 
-        return distance < self.__d
+        return distance < (self.__d/2)
 
     @property
     def id(self):

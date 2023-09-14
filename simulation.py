@@ -8,11 +8,12 @@ class Simulation(ABC):
 
     def __init__(self, width, height, food_amount, size=21):
 
-
         self._width = width
         self._height = height
         
         self._generation_size = size
+
+        self._frame = 15
 
         self._inicial_cronopios = self.__get_incial_generation()
 
@@ -28,9 +29,9 @@ class Simulation(ABC):
     def __get_incial_generation(self):
         result = []
         for _ in range(self._generation_size):
-            pos_x = randint(0, self._width)
-            pos_y = randint(0, self._height)
-            new_cronopio = Cronopio((pos_x, pos_y))
+            pos_x = randint(self._frame, self._width - self._frame)
+            pos_y = randint(self._frame, self._height - self._frame)
+            new_cronopio = Cronopio([pos_x, pos_y])
             result.append(new_cronopio)
         return result
 
@@ -39,7 +40,7 @@ class Simulation(ABC):
         for _ in range(food_amount):
             pos_x = randint(0, self._width)
             pos_y = randint(0, self._height)
-            new_food = Food((pos_x, pos_y))
+            new_food = Food([pos_x, pos_y])
             result.append(new_food)
         return result
 
