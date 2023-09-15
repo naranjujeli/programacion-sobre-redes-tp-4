@@ -6,7 +6,8 @@ class PygameSimulation(Simulation):
     def __init__(self, width, height, food_amount, generation_size=21):
         super().__init__(width, height,food_amount, generation_size)
 
-        self.__window = self.__get_window((width, height))
+        self.__size = [width, height]
+        self.__window = self.__get_window(tuple(self.__size))
         pygame.display.set_caption("Simulacion Evolutiva")
     
     def simulate(self, generation):
@@ -24,7 +25,7 @@ class PygameSimulation(Simulation):
                     running = False
 
             for cronopio in generation:
-                cronopio.time()
+                cronopio.time(self.__size)
                 for food in self._food:
                     if cronopio.able_to_eat(food):
                         cronopio.eat()

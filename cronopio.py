@@ -1,6 +1,7 @@
 import uuid
 import math
 from random import randint, random, choice
+from vector import Vector
 
 class Cronopio:
 
@@ -9,7 +10,7 @@ class Cronopio:
         self.__id = uuid.uuid4()
         self.__life = 100
 
-        self.__pos = pos
+        self.__pos = Vector(pos[0], pos[1])
 
         self.__a = self.__random_inicial_value()
         self.__b = self.__random_inicial_value()
@@ -39,26 +40,30 @@ class Cronopio:
 
         return d(y)
     
-    def time(self):
+    def time(self, window_size):
         self.__life -= 1
+        self.__bounce(window_size)
         self.__move()
         self.__t_counter += 1
         if self.__t_counter % self.__t == 0:
             self.__update_movement()
             self.__change_velocity()
             self.__t_counter = 0
+
+    def __bounce(self, window_size):
+
+        r = self.__d/2
+
+        if self.__pos[0] + r > window_size[0] or self.__pos[0] - r < 0:
+            self.__vel *= -1
+        if self.__pos[1] + r > window_size[1] or self.__pos[1] - r < 0:
+            self.__vel *= -1
     
     def __update_movement(self):
         
-        dir = choice(["UP", "DOWN", "LEFT", "RIGHT"])
-        if dir == "UP":
-            self.__move = self.__up
-        elif dir == "DOWN":
-            self.__move = self.__down
-        elif dir == "LEFT":
-            self.__move = self.__left
-        elif dir == "RIGHT":
-            self.__move = self.__right
+        angle = random(360)
+        vel_x = self.__vel * math.cos(angle/(2*math.pi))
+        vel_y = self.__vel * math.sin(angle/(2*math.pi))
 
     def __up(self):
         self.__pos[1] -= self.__vel
