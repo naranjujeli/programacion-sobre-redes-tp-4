@@ -9,6 +9,15 @@ class Vector:
 
         self.__mag = self.__get_mag()
 
+    def __add__(self, other):
+
+        self.__x += other.x
+        self.__y += other.y
+
+    @property
+    def get(self):
+        return (self.__x, self.__y)
+
     @property
     def x(self):
         return self.__x
@@ -21,12 +30,44 @@ class Vector:
     def mag(self):
         return self.__mag
     
+    def set_dir(self, dir):
+        
+        x = self.__get_mag()*math.cos(dir)
+        y = self.__get_mag()*math.sin(dir)
+
+        self.set([x, y])
+
+    def normalize(self):
+
+        dir = self.get_dir()
+        new_vector = Vector(1, 1)
+        new_vector.set_dir(dir)
+        return new_vector
+    
+    def scale(self, s):
+
+        self.__x *= s
+        self.__y *= s
+
+    def set_mag(self, new_mag):
+        
+        new = self.normalize()
+        old_mag = self.__get_mag()
+        dir = self.get_dir()
+        self.set_dir(dir)
+        self.scale(new_mag)
+        
+
+    def change_dir(self, off):
+
+        self.set_dir(self.get_dir() + off)
+    
     def get_dir(self, mode="DEGRESS"):
 
         if mode == "DEGRESS":
-            return math.arctan(self.__y / self.__x)
+            return math.atan(self.__y / self.__x)
         elif mode == "RADIANS":
-            pass
+            return math.atan(self.__y / self.__x) * math.pi/180
     
     def __get_mag(self):
         return math.sqrt(self.__x**2 + self.__y**2)

@@ -22,8 +22,6 @@ class Cronopio:
 
         self.__d = self.__get_diameter()
 
-        self.__move = self.__up
-
     def __new_vel(self):
 
         p = lambda x: -25*(x**2) + self.__b*x + self.__a
@@ -31,7 +29,9 @@ class Cronopio:
 
         x = 2*random() - 1
 
-        return f(x)
+        new_vel = Vector(1, 1)
+        new_vel.set_mag(f(x))
+        return new_vel
     
     def __get_diameter(self):
         
@@ -42,43 +42,31 @@ class Cronopio:
     
     def time(self, window_size):
         self.__life -= 1
-        self.__bounce(window_size)
-        self.__move()
         self.__t_counter += 1
         if self.__t_counter % self.__t == 0:
-            self.__update_movement()
-            self.__change_velocity()
             self.__t_counter = 0
+            self.__change_velocity()
+            self.__update_movement()
+            self.__bounce(window_size)
+        self.__move()
+
+    def __move(self):
+
+        self.__pos += self.__vel
 
     def __bounce(self, window_size):
 
         r = self.__d/2
 
-        if self.__pos[0] + r > window_size[0] or self.__pos[0] - r < 0:
+        if self.__pos.x + r > window_size.x or self.__pos.x - r < 0:
             self.__vel *= -1
-        if self.__pos[1] + r > window_size[1] or self.__pos[1] - r < 0:
+        if self.__pos.y + r > window_size.y or self.__pos.y - r < 0:
             self.__vel *= -1
     
     def __update_movement(self):
         
         angle = random(360)
-        vel_x = self.__vel * math.cos(angle/(2*math.pi))
-        vel_y = self.__vel * math.sin(angle/(2*math.pi))
-
-    def __up(self):
-        self.__pos[1] -= self.__vel
-
-    def __down(self):
-        self.__pos[1] += self.__vel
-
-    def __left(self):
-        self.__pos[0] -= self.__vel
-
-    def __right(self):
-        self.__pos[0] += self.__vel
-
-    def __still(self):
-        pass
+        self.__vel.set_dir(angle)
         
     def __change_velocity(self):
         self.__vel = self.__new_vel()
@@ -94,8 +82,11 @@ class Cronopio:
 
     def able_to_eat(self, food):
         
-        dif_x = abs(food.x - self.__pos[0])
-        dif_y = abs(food.y - self.__pos[1])
+        print(type(food))
+        print(type(self.__pos))
+
+        dif_x = abs(food.x - self.__pos.x)
+        dif_y = abs(food.y - self.__pos.y)
 
         distance = math.sqrt(dif_x**2 + dif_y**2)
 

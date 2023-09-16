@@ -1,13 +1,14 @@
 from simulation import Simulation
 import pygame
+from vector import Vector
 
 class PygameSimulation(Simulation):
 
     def __init__(self, width, height, food_amount, generation_size=21):
         super().__init__(width, height,food_amount, generation_size)
 
-        self.__size = [width, height]
-        self.__window = self.__get_window(tuple(self.__size))
+        self.__size = Vector(width, height)
+        self.__window = self.__get_window(self.__size.get)
         pygame.display.set_caption("Simulacion Evolutiva")
     
     def simulate(self, generation):
