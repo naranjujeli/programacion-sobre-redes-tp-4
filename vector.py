@@ -9,10 +9,9 @@ class Vector:
 
         self.__mag = self.__get_mag()
 
-    def __add__(self, other):
+    def __iadd__(self, other):
 
-        self.__x += other.x
-        self.__y += other.y
+        return Vector(self.__x + other.x, self.__y + other.y)
 
     @property
     def get(self):
