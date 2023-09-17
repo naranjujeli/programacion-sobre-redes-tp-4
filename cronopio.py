@@ -85,7 +85,7 @@ class Cronopio:
         d = lambda y: max(15 - abs(12*y - 3*self.__b), 1)
         y = 2*random() - 1
 
-        return d(y)
+        return d(y)*4
     
     def __random_inicial_value(self):
         return randint(-1, 1)

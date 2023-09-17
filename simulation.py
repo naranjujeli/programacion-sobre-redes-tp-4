@@ -18,6 +18,9 @@ class Simulation(ABC):
         self._inicial_cronopios = self.__get_incial_generation()
 
         self._food = self._get_food(food_amount)
+
+        self._reproduction_pool_size = 7
+        self._reproduction_pool = []
         
     def start(self):
         
@@ -53,6 +56,9 @@ class Simulation(ABC):
 
     def generate(self):
         pass
+
+    def _add_to_reproduction_pool(self, cronopio):
+        self._reproduction_pool.append(cronopio)
 
     @property
     def cronopios(self):
