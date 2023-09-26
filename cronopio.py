@@ -5,17 +5,21 @@ from vector import Vector
 
 class Cronopio:
 
-    def __init__(self, pos):
+    def __init__(self, window_size, a, b, t, frame):
 
         self.__id = uuid.uuid4()
         self.__inicial_life_duration = 10000
         self.__life = self.__inicial_life_duration
 
-        self.__pos = Vector(pos[0], pos[1])
+        self.__duration = 0
 
-        self.__a = self.__random_inicial_value()
-        self.__b = self.__random_inicial_value()
-        self.__t = randint(50, 60)
+        pos_x = randint(frame, window_size.x - frame)
+        pos_y = randint(frame, window_size.y - frame)
+        self.__pos = Vector(pos_x, pos_y)
+
+        self.__a = a
+        self.__b = b
+        self.__t = t
 
         self.__vel = self.__new_vel()
         
@@ -23,12 +27,21 @@ class Cronopio:
 
         self.__d = self.__get_diameter()
 
+        self.__alive = True
+
+    def __eq__(self, other):
+        return self.__id == other.id
+
     def fitness(self):
         pass
 
     def time(self, window_size):
 
         self.__life -= 1
+        self.__duration += 1
+        if self.__life == 0:
+            self.__alive = False
+            return
         self.__t_counter += 1
         if self.__t_counter % self.__t == 0:
             self.__t_counter = 0
@@ -87,8 +100,13 @@ class Cronopio:
 
         return d(y)*4
     
-    def __random_inicial_value(self):
-        return randint(-1, 1)
+    @property
+    def alive(self):
+        return self.__alive
+    
+    @property
+    def duration(self):
+        return self.__duration
 
     @property
     def id(self):

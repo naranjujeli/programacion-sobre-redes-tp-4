@@ -11,10 +11,10 @@ class PygameSimulation(Simulation):
         self.__window = self.__get_window(self.__size.get)
         pygame.display.set_caption("Simulacion Evolutiva")
 
-        self.__generations = []
         self.__running = False
+        self.__new_generation = []
     
-    def simulate(self, generation):
+    def simulate(self):
         
         pygame.init()
 
@@ -25,11 +25,11 @@ class PygameSimulation(Simulation):
                 if event.type == pygame.QUIT:
                     self.__running = False
 
-            self.__update(generation)
-        
-    def __update(self, generation):
-        if self.__update_cronopios(generation): return True
-        self.__update_window(generation)
+            if self.__update(self._current_generation): return self.__new_generation
+
+    def __update(self, generacion):
+        if self.__update_cronopios(generacion): return True
+        self.__update_window(generacion)
 
     def __update_cronopios(self, generation): 
         for cronopio in generation:
@@ -38,12 +38,12 @@ class PygameSimulation(Simulation):
                 if cronopio.able_to_eat(food):
                     cronopio.eat()
                     self._food.remove(food)
-            if cronopio.life <= 0:
-                if len(generation) < self._reproduction_pool_size:
-                    self._add_to_reproduction_pool(cronopio)
+            if not cronopio.alive: 
+                self.__new_generation.append(cronopio)
                 generation.remove(cronopio)
             if len(generation) == 0:
-                self.__running = False
+                return True
+        return False
 
     def __update_window(self, generation):
         self.__window.fill((0, 0, 0))
