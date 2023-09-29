@@ -5,10 +5,10 @@ from vector import Vector
 
 class Cronopio:
 
-    def __init__(self, window_size, a, b, t, frame):
+    def __init__(self, window_size, a, b, t, frame, d=None):
 
         self.__id = uuid.uuid4()
-        self.__inicial_life_duration = 10000
+        self.__inicial_life_duration = 1000
         self.__life = self.__inicial_life_duration
 
         self.__duration = 0
@@ -25,7 +25,10 @@ class Cronopio:
         
         self.__t_counter = 0
 
-        self.__d = self.__get_diameter()
+        if not d:
+            self.__d = self.__get_diameter()
+        else:
+            self.__d = d
 
         self.__alive = True
 
@@ -33,7 +36,14 @@ class Cronopio:
         return self.__id == other.id
 
     def fitness(self):
-        pass
+        return self.__duration
+    
+    def mutate(self):
+        
+        self.__a += (random() - 0.5)
+        self.__b += (random() - 0.5)
+        self.__t += choice([-1, 1])
+        self.__d += (random())*3
 
     def time(self, window_size):
 
@@ -62,7 +72,7 @@ class Cronopio:
         f = lambda x: 3/(1+(math.e)**(-p(x)))
         x = 2*random() - 1
 
-        new_vel_mag = f(x)/5
+        new_vel_mag = f(x)
         new_vel = Vector(1, 1)
         new_vel.set_mag(new_vel_mag)
         return new_vel
@@ -98,7 +108,7 @@ class Cronopio:
         d = lambda y: max(15 - abs(12*y - 3*self.__b), 1)
         y = 2*random() - 1
 
-        return d(y)*4
+        return d(y)*1.5
     
     @property
     def alive(self):

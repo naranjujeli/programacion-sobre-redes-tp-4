@@ -1,5 +1,5 @@
 from cronopio import Cronopio
-from random import randint, choice
+from random import randint, choice, random
 from abc import ABC, abstractmethod
 from food import Food
 from vector import Vector
@@ -12,6 +12,8 @@ class Simulation(ABC):
         self._width = width
         self._height = height
 
+        self.__food_amount = food_amount
+
         self.__size = Vector(self._width, self._height)
         
         self._generation_size = size
@@ -20,21 +22,25 @@ class Simulation(ABC):
 
         self._current_generation = self.__get_incial_generation()
 
-        self._food = self._get_food(food_amount)
+        self._food = self._get_food(self.__food_amount)
 
         self.__reproduction_pool_size = 7
         
-        self.__generation_number = 0
+        self._generation_number = 0
+
+        self.__mutation_parameter = 0.4
         
     def cicle(self):
-        self.__generation_number += 1
+        self._generation_number += 1
         
         dead_generation = self.simulate()
+        self._food = self._get_food(self.__food_amount)
         self._current_generation = self.generate(dead_generation)
 
     def generate(self, generacion): 
 
         new_generation = []
+        #print(f"generacion: {len(generacion)}")
         winners = self.__get_best(generacion)
         while len(new_generation) <= self._generation_size:
             parent1 = choice(winners)
@@ -42,14 +48,27 @@ class Simulation(ABC):
             new_a = (parent1.a + parent2.a)/2
             new_b = (parent1.b + parent2.b)/2
             new_t = (parent1.t + parent2.t)/2
+            new_d = (parent1.diameter + parent2.diameter)/2
 
-            new_cronopio = Cronopio(self.__size, new_a, new_b, new_t, self._frame)
+            new_cronopio = Cronopio(self.__size, new_a, new_b, new_t, self._frame, new_d)
             new_generation.append(new_cronopio)
+
+        self.__mutate(new_generation)
         return new_generation
+    
+    def __mutate(self, generation):
+        
+        for cronopio in generation:
+            flag = random()
+            if flag < self.__mutation_parameter:
+                cronopio.mutate()
+
 
     def __get_best(self, pool): 
     
+        #print(f"pool: {pool}")
         result = sorted(pool, reverse=True, key=lambda x: x.fitness())
+        print(f"best({self._generation_number}): ", result[0].fitness())
         return result[:self.__reproduction_pool_size]
 
 

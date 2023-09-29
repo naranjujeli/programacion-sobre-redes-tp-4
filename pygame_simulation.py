@@ -9,13 +9,13 @@ class PygameSimulation(Simulation):
 
         self.__size = Vector(width, height)
         self.__window = self.__get_window(self.__size.get)
-        pygame.display.set_caption("Simulacion Evolutiva")
 
         self.__running = False
         self.__new_generation = []
     
     def simulate(self):
         
+        pygame.display.set_caption(f"Simulacion Evolutiva: {self._generation_number}")
         pygame.init()
 
         self.__running = True
