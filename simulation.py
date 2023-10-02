@@ -7,28 +7,28 @@ from vector import Vector
 
 class Simulation(ABC):
 
-    def __init__(self, width, height, food_amount, size=21):
+    def __init__(self, **kargs):
 
-        self._width = width
-        self._height = height
+        self._width = kargs['width']
+        self._height = kargs['height']
 
-        self.__food_amount = food_amount
+        self.__food_amount = kargs['food_amount']
 
         self.__size = Vector(self._width, self._height)
         
-        self._generation_size = size
+        self._generation_size = kargs['size']
 
-        self._frame = 15
+        self._frame = kargs['frame']
 
         self._current_generation = self.__get_incial_generation()
 
         self._food = self._get_food(self.__food_amount)
 
-        self.__reproduction_pool_size = 7
+        self.__reproduction_pool_size = kargs['reproduction_pool_size']
         
         self._generation_number = 0
 
-        self.__mutation_parameter = 0.4
+        self.__mutation_parameter = kargs['mutation_parameters']
         
     def cicle(self):
         self._generation_number += 1
@@ -50,7 +50,7 @@ class Simulation(ABC):
             new_t = (parent1.t + parent2.t)/2
             new_d = (parent1.diameter + parent2.diameter)/2
 
-            new_cronopio = Cronopio(self.__size, new_a, new_b, new_t, self._frame, new_d)
+            new_cronopio = Cronopio(window_size=self.__size, a=new_a, b=new_b, t=new_t, frame=self._frame, d=new_d)
             new_generation.append(new_cronopio)
 
         self.__mutate(new_generation)
@@ -66,10 +66,16 @@ class Simulation(ABC):
 
     def __get_best(self, pool): 
     
-        #print(f"pool: {pool}")
-        result = sorted(pool, reverse=True, key=lambda x: x.fitness())
-        print(f"best({self._generation_number}): ", result[0].fitness())
-        return result[:self.__reproduction_pool_size]
+        print("---------------")
+        sorted_pool = sorted(pool, key=lambda x: x.fitness())
+        print(f"avg {self._generation_number}: {sum([i.fitness() for i in sorted_pool])/len(sorted_pool)}")
+        result = []
+        for i, cronopio in enumerate(sorted_pool[-self.__reproduction_pool_size-1:]):
+            result += [cronopio]*i
+        print(f"best({self._generation_number}): {max(result, key=lambda x: x.fitness()).fitness()}")
+        print(len(result))
+        print("---------------")
+        return result
 
 
     def __get_incial_generation(self):
@@ -78,7 +84,7 @@ class Simulation(ABC):
             a = randint(-1, 1)
             b = randint(-1, 1)
             t = randint(50, 60)
-            new_cronopio = Cronopio(self.__size, a, b, t, self._frame)
+            new_cronopio = Cronopio(window_size=self.__size, a=a, b=b, t=t, frame=self._frame, d=None)
             result.append(new_cronopio)
         return result
 

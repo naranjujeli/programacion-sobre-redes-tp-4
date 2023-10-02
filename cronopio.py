@@ -5,7 +5,7 @@ from vector import Vector
 
 class Cronopio:
 
-    def __init__(self, window_size, a, b, t, frame, d=None):
+    def __init__(self, **kargs):
 
         self.__id = uuid.uuid4()
         self.__inicial_life_duration = 1000
@@ -13,22 +13,24 @@ class Cronopio:
 
         self.__duration = 0
 
-        pos_x = randint(frame, window_size.x - frame)
-        pos_y = randint(frame, window_size.y - frame)
+        self.__frame = kargs['frame']
+
+        pos_x = randint(self.__frame, kargs['window_size'].x - self.__frame)
+        pos_y = randint(self.__frame, kargs['window_size'].y - self.__frame)
         self.__pos = Vector(pos_x, pos_y)
 
-        self.__a = a
-        self.__b = b
-        self.__t = t
+        self.__a = kargs['a']
+        self.__b = kargs['b']
+        self.__t = kargs['t']
 
         self.__vel = self.__new_vel()
         
         self.__t_counter = 0
 
-        if not d:
+        if not kargs['d']:
             self.__d = self.__get_diameter()
         else:
-            self.__d = d
+            self.__d = kargs['d']
 
         self.__alive = True
 
@@ -40,10 +42,10 @@ class Cronopio:
     
     def mutate(self):
         
-        self.__a += (random() - 0.5)
-        self.__b += (random() - 0.5)
-        self.__t += choice([-1, 1])
-        self.__d += (random())*3
+        self.__a = randint(-1, 1)
+        self.__b = randint(-1, 1)
+        self.__t += choice([-5, 5])
+        self.__d += 2
 
     def time(self, window_size):
 
@@ -78,16 +80,15 @@ class Cronopio:
         return new_vel
     
     def __update_movement(self):
-        angle = randint(-10, 10)
+        angle = randint(-5, 5)
         self.__vel.change_dir(angle)
 
     def __bounce(self, window_size):
 
-        r = self.__d/2
-        if self.__pos.x + r > window_size.x or self.__pos.x - r < 0:
-            self.__vel.set_x(-self.__vel.x)
-        if self.__pos.y + r > window_size.y or self.__pos.y - r < 0:
-            self.__vel.set_y(-self.__vel.y)
+        if self.__pos.x + self.__d > window_size.x: self.__pos.set_x(self.__frame)
+        if self.__pos.x - self.__d < 0: self.__pos.set_x(window_size.x-self.__frame)
+        if self.__pos.y + self.__d > window_size.y: self.__pos.set_y(self.__frame)
+        if self.__pos.y - self.__d < 0: self.__pos.set_y(window_size.y-self.__frame)
 
     def __move(self):
         self.__pos += self.__vel

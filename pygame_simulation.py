@@ -4,10 +4,10 @@ from vector import Vector
 
 class PygameSimulation(Simulation):
 
-    def __init__(self, width, height, food_amount, generation_size=21):
-        super().__init__(width, height,food_amount, generation_size)
+    def __init__(self, **kargs):
+        super().__init__(width=kargs['width'], height=kargs['height'],food_amount=kargs['food'], size=kargs['generation_size'], frame=kargs['frame'], reproduction_pool_size=kargs['reproduction_pool_size'], mutation_parameters=kargs['mutation_parameters'])
 
-        self.__size = Vector(width, height)
+        self.__size = Vector(kargs['width'], kargs['height'])
         self.__window = self.__get_window(self.__size.get)
 
         self.__running = False
