@@ -73,7 +73,6 @@ class Simulation(ABC):
         for i, cronopio in enumerate(sorted_pool[-self.__reproduction_pool_size-1:]):
             result += [cronopio]*i
         print(f"best({self._generation_number}): {max(result, key=lambda x: x.fitness()).fitness()}")
-        print(len(result))
         print("---------------")
         return result
 

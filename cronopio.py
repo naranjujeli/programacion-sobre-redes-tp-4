@@ -109,7 +109,7 @@ class Cronopio:
         d = lambda y: max(15 - abs(12*y - 3*self.__b), 1)
         y = 2*random() - 1
 
-        return d(y)*1.5
+        return d(y)*1
     
     @property
     def alive(self):

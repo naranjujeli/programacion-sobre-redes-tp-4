@@ -3,9 +3,9 @@ from pygame_simulation import PygameSimulation
 
 def main():
     
-    width = 1500
-    height = 800
-    food = 1000
+    width = 750
+    height = 400
+    food = 500
     generation_size = 21
     frame = 15
     reproduction_pool_size = 7
