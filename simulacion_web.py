@@ -23,7 +23,7 @@ class SimulacionWeb(Simulation):
         result = [parser.from_json_to_cronopio(cronopio_json) for cronopio_json in dead_cronopios]
         return result
     
-def mandar_por_socket(paquete):
+def esperar_paquete(paquete):
 
     server_socket = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
     server_address = ('localhost', 12345)
@@ -50,4 +50,4 @@ def mandar_por_socket(paquete):
 
 if __name__ == "__main__":
 
-    mandar_por_socket("nashe")
+    esperar_paquete("nashe")
