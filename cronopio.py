@@ -150,3 +150,36 @@ class Cronopio:
     @property
     def diameter(self):
         return self.__d
+
+    @property
+    def frame(self):
+        return self.__frame
+    
+
+class ParserCronopio:
+
+    def __init__(self): pass
+
+    def from_cronopio_to_json(self, cronopio):
+        
+        return {
+            cronopio.id : {
+                "diameter": cronopio.diameter,
+                "pos": cronopio.pos,
+                "duration": cronopio.duration,
+                "a": cronopio.a,
+                "b": cronopio.b,
+                "t": cronopio.t,
+                "alive": cronopio.alive,
+                "frame": cronopio.frame,
+            }
+        }
+    
+    def from_json_to_cronopio(self, cronopio_json):
+        identifier = [key for i, key in enumerate(cronopio_json.keys()) if i == 0][0]
+        frame = cronopio_json[identifier]['frame']
+        a = cronopio_json[identifier]['a']
+        b = cronopio_json[identifier]['b']
+        t = cronopio_json[identifier]['t']
+        d = cronopio_json[identifier]['d']  
+        return Cronopio(a= a, b= b, t= t, d= d, frame= frame, window_size = Vector(0, 0))
