@@ -50,8 +50,6 @@ class Vector:
 
     def set_mag(self, new_mag):
         
-        new = self.normalize()
-        old_mag = self.__get_mag()
         dir = self.get_dir()
         self.set_dir(dir)
         self.scale(new_mag)
