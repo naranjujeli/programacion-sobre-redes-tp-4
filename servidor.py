@@ -5,10 +5,20 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
-@socketio.on("connection")
-async def connection(socket):
-    socket.send("hola", "hola")
-    
+@socketio.event
+def connect(sid):
+    print("CONNECTION ESTABLISHED")
+    socketio.emit("hello", { "hola": "hola" }, to=sid)
+
+@socketio.event
+def hello(data):
+    print("HELLO RECEIVED")
+    print(data)
+    return data["hola"]
+
+# @socketio.on("json")
+# def a(data):
+#     print(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
