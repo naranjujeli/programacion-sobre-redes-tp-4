@@ -29,6 +29,9 @@ class Simulation(ABC):
         self._generation_number = 0
 
         self.__mutation_parameter = kargs['mutation_parameters']
+
+    def set_current_gen(self, new_gen):
+        self._current_generation = new_gen
         
     def cicle(self):
         self._generation_number += 1

@@ -163,16 +163,12 @@ class ParserCronopio:
     def from_cronopio_to_json(self, cronopio):
         
         return {
-            cronopio.id : {
                 "diameter": cronopio.diameter,
-                "pos": cronopio.pos,
                 "duration": cronopio.duration,
                 "a": cronopio.a,
                 "b": cronopio.b,
                 "t": cronopio.t,
-                "alive": cronopio.alive,
-                "frame": cronopio.frame,
-            }
+                "id": cronopio.id
         }
     
     def from_json_to_cronopio(self, cronopio_json):

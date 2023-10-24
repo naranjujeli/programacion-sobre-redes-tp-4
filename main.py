@@ -1,6 +1,7 @@
 from pygame_simulation import PygameSimulation
 
 
+
 def main():
     
     width = 750
