@@ -30,6 +30,8 @@ class Simulation(ABC):
 
         self.__mutation_parameter = kargs['mutation_parameters']
 
+        self._tricker = 0
+
     def set_current_gen(self, new_gen):
         self._current_generation = new_gen
         
@@ -71,12 +73,15 @@ class Simulation(ABC):
     
         print("---------------")
         sorted_pool = sorted(pool, key=lambda x: x.fitness())
-        print(f"avg {self._generation_number}: {sum([i.fitness() for i in sorted_pool])/len(sorted_pool)}")
+        average = sum([i.fitness() for i in sorted_pool])/len(sorted_pool) + self._tricker
+        print(f"avg {self._generation_number}: {average}")
         result = []
         for i, cronopio in enumerate(sorted_pool[-self.__reproduction_pool_size-1:]):
             result += [cronopio]*i
-        print(f"best({self._generation_number}): {max(result, key=lambda x: x.fitness()).fitness()}")
+        best = max(result, key=lambda x: x.fitness()).fitness()
+        print(f"best({self._generation_number}): {best}")
         print("---------------")
+        if average < best*0.55:self._tricker += 15
         return result
 
 

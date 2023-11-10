@@ -12,9 +12,13 @@ class PygameSimulation(Simulation):
 
         self.__running = False
         self.__new_generation = []
+        self._tricker = 0
+
+        
     
     def simulate(self):
         
+        self.__x = True
         pygame.display.set_caption(f"Simulacion Evolutiva: {self._generation_number}")
         pygame.init()
 
@@ -48,8 +52,17 @@ class PygameSimulation(Simulation):
     def __update_window(self, generation):
         self.__window.fill((0, 0, 0))
 
+        maxsize = 100
         for cronopio in generation:
-            pygame.draw.circle(self.__window, (0, 120, 120), cronopio.pos, cronopio.diameter)
+            red = 255*cronopio.diameter/maxsize
+            green = 255*(1-cronopio.diameter/maxsize)
+            blue = 255*(1-cronopio.diameter/maxsize)
+            if red > 255: red = 255
+            if blue > 255: blue = 255
+            if green > 255: green = 255
+            colors = (red, green, blue)
+        
+            pygame.draw.circle(self.__window, colors, cronopio.pos, cronopio.diameter)
 
         for food in self._food:
             pygame.draw.circle(self.__window, (0, 255, 0), food.pos, 3)

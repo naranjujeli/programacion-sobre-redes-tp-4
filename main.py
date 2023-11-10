@@ -4,8 +4,8 @@ from pygame_simulation import PygameSimulation
 
 def main():
     
-    width = 750
-    height = 400
+    width = 1500
+    height = 800
     food = 500
     generation_size = 21
     frame = 15

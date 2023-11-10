@@ -8,7 +8,7 @@ class Cronopio:
     def __init__(self, **kargs):
 
         self.__id = uuid.uuid4()
-        self.__inicial_life_duration = 1000
+        self.__inicial_life_duration = 600
         self.__life = self.__inicial_life_duration
 
         self.__duration = 0
@@ -45,7 +45,7 @@ class Cronopio:
         self.__a = randint(-1, 1)
         self.__b = randint(-1, 1)
         self.__t += choice([-5, 5])
-        self.__d += 2
+        self.__d += 7
 
     def time(self, window_size):
 
@@ -169,7 +169,7 @@ class ParserCronopio:
                 "b": cronopio.b,
                 "t": cronopio.t,
                 "id": cronopio.id
-        }
+            }
     
     def from_json_to_cronopio(self, cronopio_json):
         identifier = [key for i, key in enumerate(cronopio_json.keys()) if i == 0][0]

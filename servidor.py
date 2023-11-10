@@ -5,6 +5,8 @@ from cronopio import ParserCronopio
 
 # Crear una instancia de Socket.IO
 
+simulation = None
+
 app = Flask(__name__)
 server = SocketIO(app, cors_allowed_origins='*')
 
